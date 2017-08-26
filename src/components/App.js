@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 import Navbar from './Navbar'
 import Column from './Column'
 import '../assets/css/container.css'
@@ -26,9 +29,9 @@ class App extends Component {
         <Navbar />
         <div className="container-fluid">
           <div className="flex-container">
-           <Column name="backlog" threads={data.backlog} />
-           <Column name="feature" threads={data.features} />
-           <Column name="Done" threads={data.done} />
+           <Column colName="backlog" threads={data.backlog} />
+           <Column colName="feature" threads={data.features} />
+           <Column colName="Done" threads={data.done} />
           </div> 
         </div>
       </div>
@@ -36,4 +39,8 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propType = {
+  data: PropTypes.object.isRequired
+};
+
+export default DragDropContext(HTML5Backend)(App);

@@ -3,3 +3,7 @@
   flex: 0 0 32%;
   min-height: 500px;
 }
+
+.productboard-column-is-over {
+    border: 1px solid #bdbdbd;
+}
