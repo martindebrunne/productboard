@@ -8,36 +8,18 @@ const threadSource = {
   beginDrag(props) {
     return {
       id: props.id,
-      colName: props.colName,
       content: props.content,
       position: props.position,
-      removeThread: props.removeThread
+      removeThread: props.removeThread,
+      placeAThreadOnTopOfB: props.placeAThreadOnTopOfB
     };
   }
-  // ,
-  // endDrag(props) {
-  //   // props.removeThread({
-  //   //   content: props.content,
-  //   //   position: props.position
-  //   // });
-  //   return {
-  //     id: props.id,
-  //     colName: props.colName,
-  //     content: props.content,
-  //     position: props.position,
-  //     removeThread: props.removeThread
-  //   };
-  // }
 };
 
 
 const threadTarget = {
   drop(props, monitor, component) {
-    // props.placeAThreadOnTopOfB(monitor.getItem(), props.position);
-    // props.addThread({
-    //   content: props.content,
-    //   position: props.position
-    // });
+    props.placeAThreadOnTopOfB(monitor.getItem(), props.position);
   }
 };
 
@@ -62,14 +44,13 @@ class Thread extends Component {
       <div className={ 'thread ' + (isDragging || isOver ? 'thread-is-grey' : '') }>
         <p>{this.props.content}</p>
         <p>{'position: ' + this.props.position}</p>
-        <p>{'key: ' + this.props.id}</p>
+        <p>{'id: ' + this.props.id}</p>
       </div>
     ));
   }
 }
 
 Thread.propType = {
-  // removeThread: PropTypes.func.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDragTarget: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
