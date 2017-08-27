@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ItemTypes } from './Constants';
 import { DropTarget } from 'react-dnd';
 import Thread from './Thread';
+import NewThread from './NewThread';
 import '../assets/css/column.css';
 
 function organizeThreads(threads) {
@@ -41,7 +42,7 @@ class Column extends Component {
     this.state = { threads: this.props.threads };
     this.removeThread = this.removeThread.bind(this);
     this.placeAThreadOnTopOfB = this.placeAThreadOnTopOfB.bind(this);
-    // this.addThread = this.addThread.bind(this);
+    this.addThread = this.addThread.bind(this);
   }
 
   shouldComponentUpdate(prevProps, prevState) {
@@ -51,6 +52,13 @@ class Column extends Component {
     console.log('MAKE MY AJAX REQUEST');
     console.log(this.state);
     console.log(this.props.colName);
+  }
+
+  addThread() {
+    var threads = this.state.threads;
+    threads.unshift({id: -1, position: 1, content: 'new thread'});
+    threads = organizeThreads(threads);
+    this.setState({thread: threads});
   }
 
   removeThread(id) {
@@ -74,8 +82,7 @@ class Column extends Component {
     const { connectDropTarget, colName } = this.props;
     const removeThread = this.removeThread;
     const placeAThreadOnTopOfB = this.placeAThreadOnTopOfB;
-    // const addThread = this.addThread;
-    // <AddThread onClick={addThread} />
+    const addThread = this.addThread;
     return connectDropTarget(
       <div className={ 'productboard-column' }>
         <div className='productboad-column-title'>
@@ -83,7 +90,7 @@ class Column extends Component {
           {colName}
           </h3>
         </div>
-        
+        <NewThread handleClick={addThread} />
         {
           this.state.threads.map(function(data, i) {
             return (<Thread
