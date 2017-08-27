@@ -10,19 +10,19 @@ class App extends Component {
   render() {
     const data = {
       backlog: [
-        {position: 1, content: 'test'},
-        {position: 2, content: 'test2'},
-        {position: 3, content: 'test3'}
+        {id: 1, position: 1, content: 'test'},
+        {id: 2, position: 2, content: 'test2'},
+        {id: 3, position: 3, content: 'test3'}
       ],
       features: [
-        {position: 1, content: 'f1'},
-        {position: 2, content: 'f2'},
-        {position: 3, content: 'f3'}
+        {id: 4, position: 1, content: 'f1'},
+        {id: 5, position: 2, content: 'f2'},
+        {id: 6, position: 3, content: 'f3'}
       ],
       done: [
-        {position: 1, content: 'd1'},
-        {position: 2, content: 'd2'},
-        {position: 3, content: 'd3'}
+        {id: 7, position: 1, content: 'd1'},
+        {id: 8, position: 2, content: 'd2'},
+        {id: 9, position: 3, content: 'd3'}
       ]};
     return (
       <div>
@@ -30,8 +30,8 @@ class App extends Component {
         <div className="container-fluid">
           <div className="flex-container">
            <Column colName="backlog" threads={data.backlog} />
-           <Column colName="feature" threads={data.features} />
-           <Column colName="Done" threads={data.done} />
+           <Column colName="features" threads={data.features} />
+           <Column colName="done" threads={data.done} />
           </div> 
         </div>
       </div>
