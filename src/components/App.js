@@ -24,10 +24,10 @@ class App extends Component {
   }
 
   createSocket() {
-    var cable = Cable.createConsumer('ws://localhost:5000/cable?email=test@gmail.com&token=HUvAZfAbEyy_GUXVJH_A&product_name=test_1503891890');
+    var cable = Cable.createConsumer('wss://productboard-ws.herokuapp.com/cable?email=test@gmail.com&token=dZwRTK8YKPz8AvT4GHu4&product_name=test_1503893042');
     this.product = cable.subscriptions.create({
       channel: 'Products',
-      product_name: 'test_1503891890'
+      product_name: 'test_1503893042'
     }, {
       connected: this.userIsConnected,
       received: this.userReceivedData,
