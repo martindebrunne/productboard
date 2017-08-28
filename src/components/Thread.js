@@ -20,6 +20,8 @@ const threadSource = {
 const threadTarget = {
   drop(props, monitor, component) {
     props.placeAThreadOnTopOfB(monitor.getItem(), props.position);
+    // console.log(this.threads);
+    // props.updateColumn(props.colName, props.threads);
   }
 };
 
@@ -41,7 +43,7 @@ class Thread extends Component {
   render() {
     const { connectDragSource, connectDropTarget, isDragging, isOver } = this.props;
     return connectDragSource(connectDropTarget(
-      <div className={ 'thread ' + (isDragging || isOver ? 'thread-is-grey' : '') }>
+      <div onClick={() => this.props.handleClick(this.props.id)} className={ 'thread ' + (isDragging || isOver ? 'thread-is-grey' : '')}>
         <p>{this.props.content}</p>
         <p>{'position: ' + this.props.position}</p>
         <p>{'id: ' + this.props.id}</p>

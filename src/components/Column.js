@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { ItemTypes } from './Constants';
 import { DropTarget } from 'react-dnd';
 import Thread from './Thread';
@@ -24,14 +23,14 @@ const columnTarget = {
       component.setState({
         threads: threads
       });
+      props.updateColumn(props.colName, threads);
     }
   }
 };
 
 function collect(connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    connectDropTarget: connect.dropTarget()
   };
 }
 
@@ -43,22 +42,33 @@ class Column extends Component {
     this.removeThread = this.removeThread.bind(this);
     this.placeAThreadOnTopOfB = this.placeAThreadOnTopOfB.bind(this);
     this.addThread = this.addThread.bind(this);
+    this.updateColumn = this.props.updateColumn;
+    this.editThread = this.editThread.bind(this);
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    return (prevState !== this.state);
-  }
-  componentDidUpdate(prevProps, prevState) {
-    console.log('MAKE MY AJAX REQUEST');
-    console.log(this.state);
-    console.log(this.props.colName);
+  componentWillReceiveProps(nextProps) {
+    if (this.state.threads !== nextProps.threads) {
+      this.setState({ threads: nextProps.threads });
+    }
   }
 
   addThread() {
     var threads = this.state.threads;
     threads.unshift({id: -1, position: 1, content: 'new thread'});
     threads = organizeThreads(threads);
-    this.setState({thread: threads});
+    this.setState({threads: threads});
+    this.props.updateColumn(this.props.colName, threads);
+  }
+
+  editThread(id) {
+    var threads = this.state.threads
+    threads.map(function(thread) {
+      if (thread.id === id)
+        thread.content = prompt('change this', thread.content);
+      return thread;
+    });
+    this.setState({threads: threads});
+    this.props.updateColumn(this.props.colName, threads);
   }
 
   removeThread(id) {
@@ -76,6 +86,7 @@ class Column extends Component {
     this.setState({
       threads: threads
     });
+    this.props.updateColumn(this.props.colName, threads);
   }
 
   render() {
@@ -83,6 +94,7 @@ class Column extends Component {
     const removeThread = this.removeThread;
     const placeAThreadOnTopOfB = this.placeAThreadOnTopOfB;
     const addThread = this.addThread;
+    const editThread = this.editThread;
     return connectDropTarget(
       <div className={ 'productboard-column' }>
         <div className='productboad-column-title'>
@@ -92,6 +104,7 @@ class Column extends Component {
         </div>
         <NewThread handleClick={addThread} />
         {
+          
           this.state.threads.map(function(data, i) {
             return (<Thread
                     key={i}
@@ -100,7 +113,7 @@ class Column extends Component {
                     content={data.content} 
                     removeThread={removeThread}
                     placeAThreadOnTopOfB={placeAThreadOnTopOfB}
-                    // addThread={addThread}
+                    handleClick={editThread}
                     />);
           })
         }
@@ -108,9 +121,5 @@ class Column extends Component {
     );
   }
 }
-
-Column.propTypes = {
-  isOver: PropTypes.bool.isRequired
-};
 
 export default DropTarget(ItemTypes.THREAD, columnTarget, collect)(Column);
